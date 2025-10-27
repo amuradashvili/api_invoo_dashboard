@@ -1,4 +1,4 @@
-package org.Pages.Customers;
+package org.Pages.Custumers;
 
 import com.microsoft.playwright.*;
 import org.junit.*;
