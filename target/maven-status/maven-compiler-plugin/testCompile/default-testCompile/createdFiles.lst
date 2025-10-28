@@ -1,0 +1,15 @@
+org\Pages\Configurator\CashierProvidersApiTest.class
+org\Pages\Payments\DepositsApiTest.class
+org\Pages\Payments\WithdrawalsApiTest.class
+org\Pages\Payments\FraudAnalysisApiTest.class
+org\Pages\Developers\APIClientsApiTest.class
+org\Pages\Developers\WebhooksApiTest.class
+org\Pages\Configurator\BrandingApiTest.class
+org\Pages\MerchantSettings\MerchantSettingsApiTest.class
+org\Pages\Configurator\TranslationApiTest.class
+org\Pages\Custumers\CustomerListApiTest.class
+org\Pages\Dashboard\OverviewAPITest.class
+org\Pages\Configurator\PaymentProviderApiTest.class
+org\Pages\Custumers\AnalyticsApiTest.class
+org\Pages\Custumers\RiskManagementDashboardApiTest.class
+org\Pages\Dashboard\AnalyticsAPITest.class

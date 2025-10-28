@@ -2,25 +2,24 @@ package org.Pages.Payments;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * ✅ Fraud Analysis API Tests
- * ----------------------------
- * - Logs in (sa / 123456)
- * - Calls Fraud Analytics endpoints
+ * ✅ Fraud Analysis API Tests (Fixed Version)
+ * -------------------------------------------
+ * - Logs in as (sa / 123456)
+ * - Tests multiple fraud analysis endpoints
  */
 public class FraudAnalysisApiTest {
 
-    private static final String LOGIN_URL = "https://pay-app-oilbv.ondigitalocean.app/api/v1/auth/login";
-    private static final String FRAUD_ANALYSIS_URL = "https://pay-app-oilbv.ondigitalocean.app/api/v1/fraud/analysis";
+    private static final String BASE_URL = "https://pay-app-oilbv.ondigitalocean.app/api/v1";
+    private static final String LOGIN_URL = BASE_URL + "/auth/login";
     private static final String USERNAME = "sa";
     private static final String PASSWORD = "123456";
 
-    /** 🔐 Login to get token */
+    /** 🔐 Login to get JWT token */
     private String loginAndGetToken() throws IOException {
         URL url = new URL(LOGIN_URL);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -28,9 +27,9 @@ public class FraudAnalysisApiTest {
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
 
-        String jsonBody = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", USERNAME, PASSWORD);
+        String body = String.format("{\"username\":\"%s\",\"password\":\"%s\"}", USERNAME, PASSWORD);
         try (OutputStream os = conn.getOutputStream()) {
-            os.write(jsonBody.getBytes());
+            os.write(body.getBytes());
         }
 
         if (conn.getResponseCode() != 200) {
@@ -48,14 +47,14 @@ public class FraudAnalysisApiTest {
         if (response.toString().contains("\"token\"")) {
             token = response.toString().split("\"token\"\\s*:\\s*\"")[1].split("\"")[0];
         }
-        if (token == null) throw new RuntimeException("❌ Token not found!");
 
+        if (token == null) throw new RuntimeException("❌ Token not found!");
         System.out.println("✅ Logged in successfully, token acquired.");
         return token;
     }
 
-    /** 🌐 Generic request sender */
-    private int sendRequest(String urlStr, String token) throws IOException {
+    /** 🌐 Generic GET request with token */
+    private int sendGetRequest(String urlStr, String token) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -64,21 +63,21 @@ public class FraudAnalysisApiTest {
 
         int code = conn.getResponseCode();
 
-        if (code != 200) {
+        if (code == 200) {
+            System.out.println("✅ Success: " + urlStr + " → " + code);
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String firstLine = br.readLine();
+                if (firstLine != null)
+                    System.out.println("🔹 Response preview: " + firstLine.substring(0, Math.min(150, firstLine.length())));
+            }
+        } else {
             System.err.println("❌ Request failed: " + urlStr);
-            System.err.println("HTTP Status: " + code);
+            System.err.println("HTTP " + code);
             if (conn.getErrorStream() != null) {
                 try (BufferedReader r = new BufferedReader(new InputStreamReader(conn.getErrorStream()))) {
                     String line;
                     while ((line = r.readLine()) != null) System.err.println(line);
                 }
-            }
-        } else {
-            System.out.println("✅ Fraud Analysis API success: " + code);
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
-                String firstLine = br.readLine();
-                if (firstLine != null)
-                    System.out.println("🔹 Response preview: " + firstLine.substring(0, Math.min(150, firstLine.length())));
             }
         }
 
@@ -86,11 +85,32 @@ public class FraudAnalysisApiTest {
         return code;
     }
 
-    // === TEST CASE ===
+    // === TEST CASES ===
+
+    /** 🧪 1. Test fraud analyses list */
     @Test
-    public void testFraudAnalysisAPI() throws IOException {
+    public void testFraudAnalysesList() throws IOException {
         String token = loginAndGetToken();
-        int status = sendRequest(FRAUD_ANALYSIS_URL, token);
-        Assert.assertEquals("Expected 200 for Fraud Analysis API", 200, status);
+        String url = BASE_URL + "/fraud-analyses?page=0&size=20&sort=createdAt,desc";
+        int status = sendGetRequest(url, token);
+        Assert.assertEquals("Expected 200 for fraud analyses list", 200, status);
+    }
+
+    /** 🧪 2. Test fraud statistics */
+    @Test
+    public void testFraudStatistics() throws IOException {
+        String token = loginAndGetToken();
+        String url = BASE_URL + "/fraud-analyses/statistics";
+        int status = sendGetRequest(url, token);
+        Assert.assertEquals("Expected 200 for fraud statistics", 200, status);
+    }
+
+    /** 🧪 3. Test high-risk visitors */
+    @Test
+    public void testHighRiskVisitors() throws IOException {
+        String token = loginAndGetToken();
+        String url = BASE_URL + "/fraud-analyses/high-risk-visitors?minRiskScore=10&page=0&size=20";
+        int status = sendGetRequest(url, token);
+        Assert.assertEquals("Expected 200 for high-risk visitors", 200, status);
     }
 }
