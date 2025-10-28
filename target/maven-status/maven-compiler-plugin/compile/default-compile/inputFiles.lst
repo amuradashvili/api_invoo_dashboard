@@ -1,15 +1,1 @@
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Custumers\AnalyticsApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Custumers\CustomerListApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Developers\APIClientsApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Custumers\RiskManagementDashboardApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Configurator\PaymentProviderApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Dashboard\AnalyticsAPITest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Payments\DepositsApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Developers\WebhooksApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Configurator\TranslationApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Payments\FraudAnalysisApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\MerchantSettings\MerchantSettingsApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Configurator\BrandingApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Dashboard\OverviewAPITest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Configurator\CashierProvidersApiTest.java
-C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\Payments\WithdrawalsApiTest.java
+C:\Users\am\selenium\api_invoo_dashboard\src\main\java\org\Pages\main\main.java
